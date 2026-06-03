@@ -1,21 +1,16 @@
 const express = require('express');
-const db = require('./db');
 const app = express();
 const port = 3000;
 app.use(express.json());
-app.get('/', (req, res) => {
-  res.send('Hello from Portfolio!');
+app.use(express.static('public'));
+let projects = [];
+app.get('/api/projects', (req, res) => res.json(projects));
+app.post('/api/projects', (req, res) => {
+  const {title, description, url} = req.body;
+  const p = {id: projects.length+1, title, description, url};
+  projects.push(p);
+  res.json(p);
 });
-app.get('/projects', (req, res) => {
-  const projects = db.prepare('SELECT * FROM projects').all();
-  res.json(projects);
-});
-app.post('/projects', (req, res) => {
-  const { title, description, url } = req.body;
-  const stmt = db.prepare('INSERT INTO projects (title, description, url) VALUES (?, ?, ?)');
-  const info = stmt.run(title, description, url);
-  res.json({ id: info.lastInsertRowid, title, description, url });
-});
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server running at http://localhost:${port}`);
 });

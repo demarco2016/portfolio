@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects - Portfolio</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-gray-900 text-white min-h-screen">
+  <nav class="p-6 bg-gray-800 shadow-lg">
+    <div class="container mx-auto flex justify-between">
+      <h1 class="text-2xl font-bold text-blue-400">My Portfolio</h1>
+      <a href="/" class="text-gray-300 hover:text-white">Home</a>
+    </div>
+  </nav>
+  <main class="container mx-auto p-6">
+    <h2 class="text-3xl font-bold mb-8">My Projects</h2>
+    <div id="projects" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </main>
+  <script>
+    fetch('/api/projects').then(r=>r.json()).then(projects=>{
+      const c=document.getElementById('projects');
+      projects.forEach(p=>{c.innerHTML+=`<div class="bg-gray-800 p-6 rounded-lg shadow"><h3 class="text-xl font-bold text-blue-400">${p.title}</h3><p class="text-gray-400 mt-2">${p.description}</p><a href="${p.url}" class="text-blue-300 mt-4 inline-block hover:underline">View →</a></div>`});
+    });
+  </script>
+</body>
+</html>
